@@ -14,6 +14,15 @@ describe('backend-express-template routes', () => {
     };
     const res = await request(app).post('/api/v1/users').send(mockUser);
     expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      email: mockUser.email,
+      appGoal: expect.any(Number),
+      networkGoal: expect.any(Number),
+      meetupGoal: expect.any(Number),
+      linkedinGoal: expect.any(Number),
+      codeGoal: expect.any(Number),
+    });
   });
   afterAll(() => {
     pool.end();
