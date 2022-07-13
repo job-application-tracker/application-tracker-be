@@ -55,6 +55,14 @@ describe('backend-express-template routes', () => {
       codeGoal: expect.any(Number),
     });
   });
+  test('DELETE to /api/v1/users/sessions should sign out a user', async () => {
+    const [agent] = await signInAndUp();
+
+    const out = await agent.delete('/api/v1/users/sessions');
+
+    expect(out.status).toBe(200);
+    expect(out.body).toEqual({ message: 'Successfully signed out.' });
+  });
   afterAll(() => {
     pool.end();
   });
