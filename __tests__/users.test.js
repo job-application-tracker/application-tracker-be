@@ -11,7 +11,6 @@ const signInAndUp = async () => {
     };
     const agent = await request.agent(app);
     const user = await agent.post('/api/v1/users').send(mockUser);
-    await agent.post('/api/v1/users/sessions').send(mockUser);
     return [agent, user];
   } catch (e) {
     console.error(e);
@@ -40,13 +39,15 @@ describe('backend-express-template routes', () => {
     });
   });
 
-  test.skip('GET to /api/v1/users/me should return a signed in user`s information ', async () => {
+  test('GET to /api/v1/users/me should return a signed in user`s information ', async () => {
     const [agent] = await signInAndUp();
     const me = await agent.get('/api/v1/users/me');
     expect(me.status).toBe(200);
     expect(me.body).toEqual({
       id: expect.any(String),
       email: 'testing@email.com',
+      exp: expect.any(Number),
+      iat: expect.any(Number),
       appGoal: expect.any(Number),
       networkGoal: expect.any(Number),
       meetupGoal: expect.any(Number),
