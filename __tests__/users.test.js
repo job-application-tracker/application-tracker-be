@@ -18,7 +18,7 @@ const signInAndUp = async () => {
   }
 };
 
-describe('backend-express-template routes', () => {
+describe('users routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
