@@ -2,7 +2,6 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-const UserService = require('../lib/services/UserService');
 
 const signInAndUp = async () => {
   try {
@@ -12,7 +11,7 @@ const signInAndUp = async () => {
     };
     const agent = await request.agent(app);
     const user = await agent.post('/api/v1/users').send(mockUser);
-    return [agent, user];
+    return [agent, user.body];
   } catch (e) {
     console.error(e);
   }
@@ -24,7 +23,7 @@ describe('tracker routes', () => {
   });
   test('POST to /api/v1/trackers should add job information', async () => {
     const [agent, user] = await signInAndUp();
-    const resp = agent.post('/api/v1/trackers').send({
+    const resp = await agent.post('/api/v1/trackers').send({
       position: 'Software Developer 1',
       company: 'Amazon',
       status: 'Applied',
@@ -33,11 +32,16 @@ describe('tracker routes', () => {
     expect(resp.status).toBe(200);
     expect(resp.body).toEqual({
       id: expect.any(String),
-      userId: user.body.id,
+      userId: user.id,
       position: 'Software Developer 1',
       company: 'Amazon',
       status: 'Applied',
-      createdAt: expect.any(Date),
+      createdAt: expect.any(String),
+      appliedAt: null,
+      closedAt: null,
+      description: null,
+      notes: null,
+      interviewedAt: null,
     });
   });
 
