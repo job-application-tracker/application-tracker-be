@@ -19,7 +19,7 @@ CREATE TABLE trackers (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id BIGINT NOT NULL,
     position VARCHAR NOT NULL,
-    company VARCHAR,
+    company VARCHAR NOT NULL,
     description VARCHAR,
     status VARCHAR NOT NULL,
     notes VARCHAR,

@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const { jobData } = require('../data/jobs');
 
 const signInAndUp = async () => {
   try {
@@ -44,7 +45,25 @@ describe('tracker routes', () => {
       interviewedAt: null,
     });
   });
+  test('GET to /api/v1/trackers should return all the jobs the user has made', async () => {
+    const [agent, user] = await signInAndUp();
+    await Promise.all(
+      jobData.map((job) => agent.post('/api/v1/trackers').send(job))
+    );
+    const resp = await agent.get('/api/v1/trackers');
 
+    expect(resp.status).toBe(200);
+    expect(resp.body.every((item) => item.userId === user.id)).toBe(true);
+    expect(resp.body.length > 1).toBe(true);
+    expect(resp.body[0]).toEqual({
+      id: expect.any(String),
+      userId: user.id,
+      position: 'Software Developer 1',
+      company: 'Amazon',
+      status: 'Applied',
+      createdAt: expect.any(String),
+    });
+  });
   afterAll(() => {
     pool.end();
   });
