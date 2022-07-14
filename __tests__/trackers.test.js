@@ -64,6 +64,34 @@ describe('tracker routes', () => {
       createdAt: expect.any(String),
     });
   });
+  test('GET to /api/v1/trackers/:id should return all the data about the job', async () => {
+    const [agent, user] = await signInAndUp();
+    const post = await agent.post('/api/v1/trackers').send({
+      position: 'Software Developer 1',
+      company: 'Amazon',
+      status: 'Applied',
+      notes:
+        'Really like the flexibility of the job and the contact was super helpful.',
+    });
+
+    const resp = await agent.get(`/api/v1/trackers/${post.id}`);
+
+    expect(resp.status).toBe(200);
+    expect(resp.body).toEqual({
+      id: expect.any(String),
+      userId: user.id,
+      position: 'Software Developer 1',
+      company: 'Amazon',
+      status: 'Applied',
+      createdAt: expect.any(String),
+      appliedAt: null,
+      closedAt: null,
+      description: null,
+      notes:
+        'Really like the flexibility of the job and the contact was super helpful.',
+      interviewedAt: null,
+    });
+  });
   afterAll(() => {
     pool.end();
   });
