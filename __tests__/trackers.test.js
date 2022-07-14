@@ -124,6 +124,19 @@ describe('tracker routes', () => {
       interviewedAt: null,
     });
   });
+
+  test('DELETE to /api/v1/trackers/:id should delete a post', async () => {
+    const [agent] = await signInAndUp();
+    const post = await agent.post('/api/v1/trackers').send({
+      position: 'Full-Stack Software Developer',
+      company: 'Google',
+      status: 'Accepted',
+    });
+
+    const resp = await agent.delete(`/api/v1/trackers/${post.body.id}`);
+
+    expect(resp.status).toBe(204);
+  });
   afterAll(() => {
     pool.end();
   });
