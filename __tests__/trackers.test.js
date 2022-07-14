@@ -74,7 +74,7 @@ describe('tracker routes', () => {
         'Really like the flexibility of the job and the contact was super helpful.',
     });
 
-    const resp = await agent.get(`/api/v1/trackers/${post.id}`);
+    const resp = await agent.get(`/api/v1/trackers/${post.body.id}`);
 
     expect(resp.status).toBe(200);
     expect(resp.body).toEqual({
