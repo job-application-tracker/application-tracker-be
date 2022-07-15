@@ -68,7 +68,7 @@ describe('users routes', () => {
     const [agent, user] = await signInAndUp();
     const res = await agent.put(`/api/v1/users/${user.body.id}`).send({
       appGoal: 2,
-      networkGoal: 5
+      networkGoal: 5,
     });
     expect(res.status).toEqual(200);
     expect(res.body).toEqual({
@@ -83,11 +83,28 @@ describe('users routes', () => {
   });
   test('PUT /api/v1/users/:id should return a 403 if the user is not authorized', async () => {
     const [agent] = await signInAndUp();
-    const newUser = await UserService.signUp({ email: 'testing2@email.com', password: '123456' });
+    const newUser = await UserService.signUp({
+      email: 'testing2@email.com',
+      password: '123456',
+    });
     const res = await agent.put(`/api/v1/users/${newUser.id}`).send({
-      appGoal: 2
+      appGoal: 2,
     });
     expect(res.status).toEqual(403);
+  });
+  test('GET /api/v1/users/currentGoals returns users current information', async () => {
+    const [agent] = await signInAndUp();
+    const me = await agent.get('/api/v1/users/currentGoals');
+    expect(me.status).toBe(200);
+    expect(me.body).toEqual({
+      id: expect.any(String),
+      email: 'testing@email.com',
+      appGoal: expect.any(Number),
+      networkGoal: expect.any(Number),
+      meetupGoal: expect.any(Number),
+      linkedinGoal: expect.any(Number),
+      codeGoal: expect.any(Number),
+    });
   });
   afterAll(() => {
     pool.end();
