@@ -28,6 +28,7 @@ describe('tracker routes', () => {
       position: 'Software Developer 1',
       company: 'Amazon',
       status: 'Applied',
+      index: 0,
     });
 
     expect(resp.status).toBe(200);
@@ -70,6 +71,7 @@ describe('tracker routes', () => {
       position: 'Software Developer 1',
       company: 'Amazon',
       status: 'Applied',
+      index: 0,
       notes:
         'Really like the flexibility of the job and the contact was super helpful.',
     });
@@ -98,6 +100,7 @@ describe('tracker routes', () => {
       position: 'Software Developer 1',
       company: 'Amazon',
       status: 'Applied',
+      index: 0,
       notes:
         'Really like the flexibility of the job and the contact was super helpful.',
     });
@@ -131,6 +134,7 @@ describe('tracker routes', () => {
       position: 'Full-Stack Software Developer',
       company: 'Google',
       status: 'Accepted',
+      index: 0,
     });
 
     const resp = await agent.delete(`/api/v1/trackers/${post.body.id}`);
