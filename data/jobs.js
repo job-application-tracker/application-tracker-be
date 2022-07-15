@@ -18,4 +18,5 @@ const jobData = [
     index: 1,
   },
 ];
+
 module.exports = { jobData };

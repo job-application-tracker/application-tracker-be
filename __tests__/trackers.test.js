@@ -2,7 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-const { jobData } = require('../data/jobs');
+const { jobData, shapeForJobData } = require('../data/jobs');
 
 const signInAndUp = async () => {
   try {
@@ -39,6 +39,7 @@ describe('tracker routes', () => {
       company: 'Amazon',
       status: 'Applied',
       createdAt: expect.any(String),
+      index: expect.any(Number),
       appliedAt: null,
       closedAt: null,
       description: null,
@@ -63,6 +64,7 @@ describe('tracker routes', () => {
       company: 'Amazon',
       status: 'Applied',
       createdAt: expect.any(String),
+      index: expect.any(Number),
     });
   });
   test('GET to /api/v1/trackers/:id should return all the data about the job', async () => {
@@ -85,6 +87,7 @@ describe('tracker routes', () => {
       position: 'Software Developer 1',
       company: 'Amazon',
       status: 'Applied',
+      index: expect.any(Number),
       createdAt: expect.any(String),
       appliedAt: null,
       closedAt: null,
@@ -119,6 +122,7 @@ describe('tracker routes', () => {
       company: 'Amazon',
       status: 'Interviewing',
       createdAt: expect.any(String),
+      index: expect.any(Number),
       appliedAt: null,
       closedAt: null,
       description: null,
@@ -145,3 +149,5 @@ describe('tracker routes', () => {
     pool.end();
   });
 });
+
+const trackerTestingData = shapeForJobData;
