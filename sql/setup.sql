@@ -2,6 +2,7 @@
 -- The SQL in this file will be executed when you run `npm run setup-db`
 
 DROP TABLE IF EXISTS trackers;
+DROP TABLE IF EXISTS achievements;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
@@ -32,4 +33,15 @@ CREATE TABLE trackers (
     foreign key (user_id) references users(id)
 );
 
-
+CREATE TABLE achievements (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  user_id BIGINT NOT NULL,
+  app_num INT DEFAULT 0,
+  network_num INT DEFAULT 0,
+  meetup_num INT DEFAULT 0,
+  linkedin_num INT DEFAULT 0,
+  code_num INT DEFAULT 0,
+  year INT NOT NULL,
+  week INT NOT NULL,
+  foreign key (user_id) references users(id)
+)
