@@ -1,7 +1,7 @@
-const setup = require('../data/setup');
-const app = require('../lib/app');
-const { request } = require('../lib/app');
 const pool = require('../lib/utils/pool');
+const setup = require('../data/setup');
+const request = require('supertest');
+const app = require('../lib/app');
 
 const signInAndUp = async () => {
   try {
@@ -26,10 +26,10 @@ describe('achievements routes', () => {
     const resp = await agent.post('/api/v1/achievements').send({
       userId: user.id,
       year: 2022,
-      week: 27
+      week: 27,
     });
-    expect(res.status).toEqual(200);
-    expect(res.body).toEqual({
+    expect(resp.status).toEqual(200);
+    expect(resp.body).toEqual({
       id: expect.any(String),
       userId: user.id,
       appNum: 0,
@@ -38,7 +38,7 @@ describe('achievements routes', () => {
       linkedinNum: 0,
       codeNum: 0,
       year: expect.any(Number),
-      week: expect.any(Number)
+      week: expect.any(Number),
     });
   });
   afterAll(() => {
