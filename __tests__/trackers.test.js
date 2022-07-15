@@ -2,7 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-const { jobData, shapeForJobData } = require('../data/jobs');
+const { jobData } = require('../data/jobs');
 
 const signInAndUp = async () => {
   try {
@@ -149,5 +149,3 @@ describe('tracker routes', () => {
     pool.end();
   });
 });
-
-const trackerTestingData = shapeForJobData;
