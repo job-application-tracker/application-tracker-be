@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    email VARCHAR NOT NULL,
+    email VARCHAR NOT NULL UNIQUE,
     password_hash VARCHAR NOT NULL,
     app_goal INT DEFAULT 3, 
     network_goal INT DEFAULT 3, 
