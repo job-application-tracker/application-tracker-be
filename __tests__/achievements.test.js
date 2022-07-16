@@ -48,7 +48,9 @@ describe('achievements routes', () => {
       year: 2022,
       week: 27,
     });
-    const resp2 = await agent.get('/api/v1/achievements/week?year=2022&week=27');
+    const resp2 = await agent.get(
+      '/api/v1/achievements/week?year=2022&week=27'
+    );
     expect(resp2.status).toEqual(200);
     expect(resp2.body).toEqual({
       id: expect.any(String),
@@ -69,12 +71,16 @@ describe('achievements routes', () => {
       year: 2022,
       week: 27,
     });
-    const resp = await agent.put('/api/v1/achievements/week?year=2022&week=27').send({
-      appNum: 1
-    });
+    const resp = await agent
+      .put('/api/v1/achievements/week?year=2022&week=27')
+      .send({
+        appNum: 1,
+      });
     expect(resp.status).toEqual(200);
 
-    const resp2 = await agent.get('/api/v1/achievements/week?year=2022&week=27');
+    const resp2 = await agent.get(
+      '/api/v1/achievements/week?year=2022&week=27'
+    );
     expect(resp2.status).toEqual(200);
     expect(resp2.body).toEqual({
       id: expect.any(String),
@@ -88,35 +94,39 @@ describe('achievements routes', () => {
       week: 27,
     });
   });
-  test('GET /api/v1/achievements should return the aggregate totals for a user', async () => {
+  test('GET /api/v1/achievements/sums should return the aggregate totals for a user', async () => {
     const [agent, user] = await signInAndUp();
     await agent.post('/api/v1/achievements').send({
       userId: user.id,
       year: 2022,
       week: 27,
     });
-    const resp1 = await agent.put('/api/v1/achievements/week?year=2022&week=27').send({
-      appNum: 1,
-      networkNum: 3,
-      meetupNum: 5,
-      linkedinNum: 3,
-      codeNum: 4
-    });
+    const resp1 = await agent
+      .put('/api/v1/achievements/week?year=2022&week=27')
+      .send({
+        appNum: 1,
+        networkNum: 3,
+        meetupNum: 5,
+        linkedinNum: 3,
+        codeNum: 4,
+      });
     expect(resp1.status).toEqual(200);
     await agent.post('/api/v1/achievements').send({
       userId: user.id,
       year: 2022,
       week: 28,
     });
-    const resp2 = await agent.put('/api/v1/achievements/week?year=2022&week=28').send({
-      appNum: 1,
-      networkNum: 1,
-      meetupNum: 1,
-      linkedinNum: 1,
-      codeNum: 1
-    });
+    const resp2 = await agent
+      .put('/api/v1/achievements/week?year=2022&week=28')
+      .send({
+        appNum: 1,
+        networkNum: 1,
+        meetupNum: 1,
+        linkedinNum: 1,
+        codeNum: 1,
+      });
     expect(resp2.status).toEqual(200);
-    const resp3 = await agent.get('/api/v1/achievements');
+    const resp3 = await agent.get('/api/v1/achievements/sums');
     expect(resp3.status).toEqual(200);
     expect(resp3.body).toEqual({
       userId: user.id,
@@ -124,9 +134,67 @@ describe('achievements routes', () => {
       networkSum: 4,
       meetupSum: 6,
       linkedinSum: 4,
-      codeSum: 5
+      codeSum: 5,
     });
-
+  });
+  test('GET /api/v1/achievements should return the weekly totals for a user', async () => {
+    const [agent, user] = await signInAndUp();
+    await agent.post('/api/v1/achievements').send({
+      userId: user.id,
+      year: 2022,
+      week: 27,
+    });
+    const resp1 = await agent
+      .put('/api/v1/achievements/week?year=2022&week=27')
+      .send({
+        appNum: 1,
+        networkNum: 3,
+        meetupNum: 5,
+        linkedinNum: 3,
+        codeNum: 4,
+      });
+    expect(resp1.status).toEqual(200);
+    await agent.post('/api/v1/achievements').send({
+      userId: user.id,
+      year: 2022,
+      week: 28,
+    });
+    const resp2 = await agent
+      .put('/api/v1/achievements/week?year=2022&week=28')
+      .send({
+        appNum: 1,
+        networkNum: 1,
+        meetupNum: 1,
+        linkedinNum: 1,
+        codeNum: 1,
+      });
+    expect(resp2.status).toEqual(200);
+    const resp3 = await agent.get('/api/v1/achievements');
+    expect(resp3.status).toEqual(200);
+    expect(resp3.body).toEqual([
+      {
+        id: expect.any(String),
+        userId: user.id,
+        year: 2022,
+        week: 27,
+        appNum: 1,
+        networkNum: 3,
+        meetupNum: 5,
+        linkedinNum: 3,
+        codeNum: 4,
+      },
+      {
+        id: expect.any(String),
+        userId: user.id,
+        year: 2022,
+        week: 28,
+        appNum: 1,
+        networkNum: 1,
+        meetupNum: 1,
+        linkedinNum: 1,
+        codeNum: 1,
+      },
+    ]);
   });
   afterAll(() => {
     pool.end();
