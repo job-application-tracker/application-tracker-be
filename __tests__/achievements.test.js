@@ -61,7 +61,32 @@ describe('achievements routes', () => {
       year: 2022,
       week: 27,
     });
+  });
+  test('PUT /api/v1/achievements/week should update the list of achievements', async () => {
+    const [agent, user] = await signInAndUp();
+    await agent.post('/api/v1/achievements').send({
+      userId: user.id,
+      year: 2022,
+      week: 27,
+    });
+    const resp = await agent.put('/api/v1/achievements/week?year=2022&week=27').send({
+      appNum: 1
+    });
+    expect(resp.status).toEqual(200);
 
+    const resp2 = await agent.get('/api/v1/achievements/week?year=2022&week=27');
+    expect(resp2.status).toEqual(200);
+    expect(resp2.body).toEqual({
+      id: expect.any(String),
+      userId: user.id,
+      appNum: 1,
+      networkNum: 0,
+      meetupNum: 0,
+      linkedinNum: 0,
+      codeNum: 0,
+      year: 2022,
+      week: 27,
+    });
   });
   afterAll(() => {
     pool.end();
