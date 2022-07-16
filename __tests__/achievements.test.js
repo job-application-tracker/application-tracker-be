@@ -21,7 +21,7 @@ describe('achievements routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
-  test('POST to /api/v1/achievements should update achievements for the user', async () => {
+  test('POST to /api/v1/achievements should create a row of achievements for the user', async () => {
     const [agent, user] = await signInAndUp();
     const resp = await agent.post('/api/v1/achievements').send({
       userId: user.id,
@@ -40,6 +40,28 @@ describe('achievements routes', () => {
       year: expect.any(Number),
       week: expect.any(Number),
     });
+  });
+  test('GET /api/v1/achievements/week should return the list of achievements for the specified week for the user', async () => {
+    const [agent, user] = await signInAndUp();
+    await agent.post('/api/v1/achievements').send({
+      userId: user.id,
+      year: 2022,
+      week: 27,
+    });
+    const resp2 = await agent.get('/api/v1/achievements/week?year=2022&week=27');
+    expect(resp2.status).toEqual(200);
+    expect(resp2.body).toEqual({
+      id: expect.any(String),
+      userId: user.id,
+      appNum: 0,
+      networkNum: 0,
+      meetupNum: 0,
+      linkedinNum: 0,
+      codeNum: 0,
+      year: 2022,
+      week: 27,
+    });
+
   });
   afterAll(() => {
     pool.end();
