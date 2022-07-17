@@ -15,17 +15,21 @@ CREATE TABLE users (
     code_goal INT DEFAULT 3
 );
 
+
 CREATE TABLE trackers (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+   	index INT NOT NULL,
+    status VARCHAR NOT NULL,
     user_id BIGINT NOT NULL,
     position VARCHAR NOT NULL,
     company VARCHAR NOT NULL,
     description VARCHAR,
-    status VARCHAR NOT NULL,
     notes VARCHAR,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), 
     applied_at TIMESTAMPTZ,
     interviewed_at TIMESTAMPTZ,
-    closed_at TIMESTAMPTZ,
+    closed_at TIMESTAMPTZ,  
     foreign key (user_id) references users(id)
 );
+
+
