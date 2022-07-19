@@ -19,7 +19,6 @@ CREATE TABLE users (
 
 CREATE TABLE trackers (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-   	index INT NOT NULL,
     status VARCHAR NOT NULL,
     user_id BIGINT NOT NULL,
     position VARCHAR NOT NULL,
