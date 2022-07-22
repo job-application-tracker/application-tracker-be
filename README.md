@@ -1,4 +1,5 @@
 # job.find()
+(Desktop use only)
 
 ## What is job.find()? 
 Is your job search is returning null? Then job.find() is the app for you. If you only measure success by the number of offers you receive, hunting for a job can feel tedious and defeating.
